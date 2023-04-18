@@ -1,0 +1,28 @@
+[
+    {
+     "title": "Spanish",
+        "cards": [
+        {
+            "term": "Yo",
+            "definition" : "I"
+        },
+        {
+            "term" : "Tu",
+            "definiton" : "You"
+        }
+        ]
+    },
+    {
+        "title": "Emotions",
+        "cards": [
+        {
+            "term": "happy",
+            "definition" : "feeling or showing pleasure or contentment"
+        },
+        {
+            "term" : "sad",
+            "definiton" : "feeling or showing sorrow"
+        }
+        ]
+    }
+]
