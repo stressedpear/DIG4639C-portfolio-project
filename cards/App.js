@@ -12,10 +12,14 @@ function HomeScreen ({route, navigation}) {
   const { studyCards } = route.params
   return (
     <SafeAreaProvider>
-      <Header leftComponent={{
-        text: 'Cards',
-        color: '#fff',
-      }}></Header>
+      <Header
+  ViewComponent={LinearGradient} // Don't forget this!
+  linearGradientProps={{
+    colors: ['red', 'pink'],
+    start: { x: 0, y: 0.5 },
+    end: { x: 1, y: 0.5 },
+  }}
+/>
       <Text>Your Cards: </Text>
     </SafeAreaProvider>
   )
