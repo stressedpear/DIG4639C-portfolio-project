@@ -1,7 +1,7 @@
 {
   "name": "cards",
   "version": "1.0.0",
-  "homepage": "https://stressedpear.github.io/DIG4639C-portfolio-project/",
+  "homepage": "https://stressedpear.github.io/card-app/",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
