@@ -1,14 +1,14 @@
 # DIG4639C-portfolio-project
 Mobile development final project 
 
-Description
+Description: 
 I chose option 2: new project, 3 components for my portfolio project. I would like to create a
 new project that takes inspiration from our exercise 9: design a flash card app. For this
 exercise we designed the app but did not implement in React Native. The application will allow
 users to create and view study card decks. There will be three screens home, add, and study
 that will be organized by using the Bottom Tabs and Stack collections form React Navigation.
 
-Navigation
+Navigation: 
 For this project I will be using nested react native navigators. These navigators include tab and
 stack. The initial screen will be a home screen that include the decks of card that the user has
 created. When one of the decks are pressed then a new stack screen will push in that allows
@@ -17,7 +17,7 @@ arrow. Included on the home screen is tab navigation with a house icon for home 
 icon for the add screen. On the add screen the save button that will add a new deck to the
 home screen.
 
-Screens and Components
+Screens and Components: 
 Core Components:
 • View
 • StyleSheet
