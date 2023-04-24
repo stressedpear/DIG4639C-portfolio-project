@@ -1,5 +1,5 @@
 
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import { StyleSheet, Text, View, FlatList, ScrollView, SafeAreaView } from 'react-native';
 import React, { useState, useCallback } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -7,12 +7,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Button } from '@rneui/base';
 import { MaterialCommunityIcons } from "react-native-vector-icons";
 import { Header } from '@rneui/base';
-import { Card, LinearProgress, BottomSheet } from '@rneui/themed';
+import { Card, LinearProgress, BottomSheet, Input } from '@rneui/themed';
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
-function StudyScreen ({route, navigation}) {
+function StudyScreen ({route}) {
   const { title, cards} = route.params.studyCards
   
   let [progress, setProgress] = useState(0)
@@ -81,16 +81,69 @@ function StudyScreen ({route, navigation}) {
   )
 }
 
-function AddScreen ({}) {
+function AddScreen ({navigation, route}) {
+  let { studyCards } = route.params
+  const [title, setTitle] = useState("")
+  const [numCards, setNumCards] = useState(1);
+  const [cardsData, setCardsData] = useState([{ term: '', definition: '' }]);
+
+  const handleAddCard = () => {
+    setNumCards(numCards + 1);
+    setCardsData([...cardsData, { term: '', definition: '' }]);
+  }
+
+  const handleTermChange = (index, value) => {
+    const updatedCardsData = [...cardsData];
+    updatedCardsData[index].term = value;
+    setCardsData(updatedCardsData);
+  }
+
+  const handleDefinitionChange = (index, value) => {
+    const updatedCardsData = [...cardsData];
+    updatedCardsData[index].definition = value;
+    setCardsData(updatedCardsData);
+  }
+
+  const handleSave = () => {
+    const data = {
+      title: title,
+      cards: cardsData
+    }
+    studyCards.push(data)
+    console.log(studyCards);
+    navigation.navigate("Cards",{
+      studyCards: studyCards
+    })
+  }
+
+  const handleCancel = () => {
+    setCardsData([...cardsData, { term: '', definition: '' }]);
+    setNumCards(1)
+    setTitle('')
+  }
   return(
-    <View>
-      <Text>add </Text>
-    </View>
+    <SafeAreaView>
+      <ScrollView>
+        <Input label="Title" placeholder="Plants" onChangeText={(value) => setTitle(value)}/>
+      {[...Array(numCards)].map((_, index) => (
+        <Card key={index}>
+          <View>
+            <Input label="Term" placeholder="Aloe" onChangeText={(value) => handleTermChange(index, value)} />
+            <Input label="Definition" placeholder="A soothing plant" onChangeText={(value) => handleDefinitionChange(index, value)} />
+          </View>
+        </Card>
+      ))}
+      <Button title={"Add Card"} onPress={handleAddCard} />
+      <Button title={"Save"} onPress={handleSave} />
+        <Button title={"Cancel"} onPress={handleCancel} />
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
 function CardScreen ({route, navigation}) {
-  const { studyCards } = route.params
+  const  { studyCards } = route.params
+
   const Item = ({item}) => (
     <View style={styles.item}>
       <Button
@@ -108,6 +161,7 @@ function CardScreen ({route, navigation}) {
       ></Button>
     </View>
   )
+
   return (
     <View>
       <Text>Your Cards:</Text>
@@ -117,6 +171,7 @@ function CardScreen ({route, navigation}) {
       numColumns={2}
       keyExtractor={(item) => item.title}
       />
+  
     </View>
     
   )
@@ -126,31 +181,31 @@ function Home() {
   const studyCards = [
     {
       "title": "Spanish",
-        "cards": [
-          {
-            "term": "Yo",
-            "definition" : "I"
-          },
-          {
-            "term" : "Tu",
-            "definition" : "You"
-          }
-        ]
-      },
-      {
-        "title": "Emotions",
-        "cards": [
-          {
-            "term": "happy",
-            "definition" : "feeling or showing pleasure or contentment"
-          },
-          {
-            "term" : "sad",
-            "definition" : "feeling or showing sorrow"
-          }
-        ]
-      }
-    ]
+      "cards": [
+        {
+          "term": "Yo",
+          "definition" : "I"
+        },
+        {
+          "term" : "Tu",
+          "definition" : "You"
+        }
+      ]
+    },
+    {
+      "title": "Emotions",
+      "cards": [
+        {
+          "term": "happy",
+          "definition" : "feeling or showing pleasure or contentment"
+        },
+        {
+          "term" : "sad",
+          "definition" : "feeling or showing sorrow"
+        }
+      ]
+    }
+  ]
   return (
     <Tab.Navigator initialRouteName='Cards' screenOptions={{ tabBarActiveTintColor: '#FD8C24'}}>
           <Tab.Screen
@@ -173,6 +228,7 @@ function Home() {
                 <MaterialCommunityIcons name="card-plus" color={color} size={size} />
               ),
             }}
+            initialParams={{studyCards: studyCards}}
           />
       </Tab.Navigator>
   );
@@ -180,12 +236,12 @@ function Home() {
 
 
 export default function App() {
-  
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} options={{ headerShown: false }}/>
-        <Stack.Screen name="Study" component={StudyScreen}/>
+        <Stack.Screen name="Study" component={StudyScreen} />
       </Stack.Navigator>
     
     </NavigationContainer>
